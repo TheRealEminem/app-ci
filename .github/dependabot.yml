@@ -1,0 +1,11 @@
+# Keeps the pinned actions (by SHA, with the version in a comment) current, in the workflows and in the composite
+# actions. Each app that calls app-ci@v1 gets the updates when its tag moves, not from Dependabot.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directories: ["/", "/setup", "/previous-release"]
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
