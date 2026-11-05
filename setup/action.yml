@@ -72,14 +72,14 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v7
       if: inputs.node-version != ''
       with:
         node-version: ${{ inputs.node-version }}
         cache: npm
         cache-dependency-path: ${{ inputs.node-lockfiles }}
 
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v7
       if: inputs.python-version != ''
       with:
         python-version: ${{ inputs.python-version }}
@@ -109,14 +109,14 @@ runs:
           Windows) echo "pip-dir=$LOCALAPPDATA\\pip\\Cache" ;;
         esac >>"$GITHUB_OUTPUT"
 
-    - uses: actions/cache@v4
+    - uses: actions/cache@v6
       if: inputs.pip-cache-files != ''
       with:
         path: ${{ steps.keys.outputs.pip-dir }}
         key: pip-${{ runner.os }}-${{ runner.arch }}-${{ inputs.cache-suffix }}-${{ steps.keys.outputs.pip }}
         restore-keys: pip-${{ runner.os }}-${{ runner.arch }}-${{ inputs.cache-suffix }}-
 
-    - uses: actions/cache@v4
+    - uses: actions/cache@v6
       id: runtime
       if: inputs.runtime-cache-path != ''
       with:

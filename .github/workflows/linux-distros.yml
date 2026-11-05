@@ -92,16 +92,16 @@ jobs:
     runs-on: ${{ matrix.arch == 'arm64' && inputs.runner_arm64 || inputs.runner_x86_64 }}
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         id: download
         continue-on-error: true   # (no artifact: that arch's build failed; recorded as missing below)
         with:
           name: ${{ inputs.artifact_prefix }}${{ matrix.arch }}
           path: dist
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v6
         if: inputs.cache_path != ''
         with:
           path: ${{ inputs.cache_path }}
@@ -154,7 +154,7 @@ jobs:
             >"app-ci-result/$ARCH-$ID.json"
           cat "app-ci-result/$ARCH-$ID.json"
           [ "$OUTCOME" = success ] || echo "::warning::$ARCH: $NAME: $OUTCOME"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: app-ci-distro-${{ matrix.arch }}-${{ matrix.distro.id }}
@@ -169,7 +169,7 @@ jobs:
     outputs:
       drop: ${{ steps.verdict.outputs.drop }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: app-ci-distro-*
           path: results
