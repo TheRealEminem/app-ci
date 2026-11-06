@@ -99,7 +99,10 @@ runs:
         PIP_FILES: ${{ inputs.pip-cache-files }}
         RUNTIME_FILES: ${{ inputs.runtime-cache-files }}
       run: |
-        shopt -s globstar nullglob
+        # macOS runners' bash is 3.2, which has nullglob but not globstar, and `shopt -s globstar` stopping the step
+        # there stopped every Mac build. So on a Mac `**` in these lists only reaches one folder down.
+        shopt -s nullglob
+        shopt -s globstar 2>/dev/null || true
         hash() { local f=(); for g in $1; do f+=($g); done; [ ${#f[@]} -gt 0 ] && cat "${f[@]}" | git hash-object --stdin || echo none; }
         echo "pip=$(hash "$PIP_FILES")" >>"$GITHUB_OUTPUT"
         echo "runtime=$(hash "$RUNTIME_FILES")" >>"$GITHUB_OUTPUT"
