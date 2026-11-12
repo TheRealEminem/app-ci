@@ -48,7 +48,7 @@ runs:
         REPO: ${{ inputs.repo }}
       run: echo "tag=$(gh release view --repo "$REPO" --json tagName -q .tagName 2>/dev/null || echo none)" >>"$GITHUB_OUTPUT"
 
-    - uses: actions/cache@v4
+    - uses: actions/cache@v6
       if: steps.which.outputs.tag != 'none'
       with:
         path: ${{ inputs.save-as }}
